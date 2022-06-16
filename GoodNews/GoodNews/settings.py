@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # подключаем связи для flatpages
+    \
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
 ]
 

@@ -1,12 +1,6 @@
 from datetime import datetime
-
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-# импорт дженериков для представлений: Список обьектов, один объект, создание, редактирование и удаление объекта
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-# импорт миксина для проверки аутентификации
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.decorators import method_decorator
 
 from .forms import PostForm
 from .models import Post, Category  # импорт нашей модели
@@ -61,30 +55,23 @@ class PostCreateView(CreateView):
     template_name = 'news/add.html'
     form_class = PostForm
 
-
-@method_decorator(login_required, name='dispatch')
-class PostUpdateView(UpdateView, LoginRequiredMixin):
-    """
-    Класс для редактирования публикации (объекта класса 'Post').
-    Создан на основе дженерика 'UpdateView'.
-    """
+# дженерик для редактирования объекта
+class PostUpdateView(UpdateView):
     template_name = 'news/add.html'
     form_class = PostForm
 
+    #
     def get_object(self, **kwargs):
         """
-        Метод get_object мы используем вместо queryset, чтобы получить информацию об объекте,
-        который мы собираемся редактировать.
+        метод get_object мы используем вместо queryset, чтобы получить информацию об объекте, который мы собираемся редактировать
+        :param kwargs:
+        :return:
         """
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
 # дженерик для удаления товара
 class PostDeleteView(DeleteView):
-    """
-    Класс для удаления публикации (объекта класса 'Post').
-    Создан на основе дженерика 'DeleteView'.
-    """
     template_name = 'news/delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
