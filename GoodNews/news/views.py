@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -56,7 +58,8 @@ class PostCreateView(CreateView):
     form_class = PostForm
 
 # дженерик для редактирования объекта
-class PostUpdateView(UpdateView):
+
+class PostUpdateView(UpdateView, LoginRequiredMixin):
     template_name = 'news/add.html'
     form_class = PostForm
 
